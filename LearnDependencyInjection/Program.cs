@@ -1,5 +1,6 @@
 ﻿using Chapter01Library;
 using Microsoft.Extensions.Configuration;
+using System.Security.Principal;
 
 
 //IMessageWriter writer = new ConsoleMessageWriter();
@@ -19,7 +20,7 @@ IConfigurationRoot configuration = new ConfigurationBuilder()
 string typeName = configuration["messageWriter"];
 Type type = Type.GetType(typeName, throwOnError: true);
 
-IMessageWriter writer = (IMessageWriter)Activator.CreateInstance(type);
+IMessageWriter writer = new SecureMessageWriter(new ConsoleMessageWriter(), WindowsIdentity.GetCurrent());
 
 /*
  * *********************************************
